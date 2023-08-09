@@ -25,13 +25,13 @@ func archive(dir, zipFilename string) error {
 }
 
 // Compress 压缩文件夹
-func Compress(path, targetFile string) error {
+func Compress(path, targetFile, password string) error {
 	d, err := os.Create(targetFile)
 	if err != nil {
 		return err
 	}
 	defer d.Close()
-	w := zip.NewWriter(d)
+	w := ezip.NewWriter(d)
 	defer w.Close()
 
 	f, err := os.Open(path)
@@ -39,7 +39,7 @@ func Compress(path, targetFile string) error {
 		return err
 	}
 
-	err = comp(f, "", w)
+	err = comp(f, "", w, password)
 
 	return err
 }
@@ -91,7 +91,7 @@ func CompressWithPassword(src, dst, password string) error {
 	return err
 }
 
-func comp(file *os.File, prefix string, zw *zip.Writer) error {
+func comp(file *os.File, prefix string, zw *ezip.Writer, password string) error {
 	info, err := file.Stat()
 	if err != nil {
 		return err
@@ -107,13 +107,13 @@ func comp(file *os.File, prefix string, zw *zip.Writer) error {
 			if err != nil {
 				return err
 			}
-			err = comp(f, prefix, zw)
+			err = comp(f, prefix, zw, password)
 			if err != nil {
 				return err
 			}
 		}
 	} else {
-		header, err := zip.FileInfoHeader(info)
+		header, err := ezip.FileInfoHeader(info)
 		header.Name = prefix + "/" + header.Name
 		if err != nil {
 			return err
