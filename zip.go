@@ -114,9 +114,12 @@ func comp(file *os.File, prefix string, zw *ezip.Writer, password string) error 
 		}
 	} else {
 		header, err := ezip.FileInfoHeader(info)
-		header.Name = prefix + "/" + header.Name
 		if err != nil {
 			return err
+		}
+		header.Name = prefix + "/" + header.Name
+		if password != "" {
+			header.SetPassword(password)
 		}
 		writer, err := zw.CreateHeader(header)
 		if err != nil {
