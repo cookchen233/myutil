@@ -3,8 +3,8 @@ package myutil
 import (
 	"archive/zip"
 	"compress/flate"
-	ezip "github.com/alexmullins/zip"
 	"github.com/mholt/archiver"
+	ezip "github.com/yeka/zip"
 	"io"
 	"os"
 	"path/filepath"

@@ -3,7 +3,6 @@ module github.com/cookchen233/myutil
 go 1.19
 
 require (
-	github.com/alexmullins/zip v0.0.0-20180717182244-4affb64b04d0
 	github.com/go-resty/resty/v2 v2.7.0
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/mholt/archiver v3.1.1+incompatible
@@ -13,6 +12,7 @@ require (
 	github.com/shopspring/decimal v1.3.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/xuri/excelize/v2 v2.7.1
+	github.com/yeka/zip v0.0.0-20180914125537-d046722c6feb
 	golang.org/x/text v0.11.0
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 )
