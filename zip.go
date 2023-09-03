@@ -3,11 +3,14 @@ package myutil
 import (
 	"archive/zip"
 	"compress/flate"
+	"fmt"
+	ezip "github.com/alexmullins/zip"
 	"github.com/mholt/archiver"
-	ezip "github.com/yeka/zip"
 	"io"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 )
 
@@ -22,6 +25,27 @@ func archive(dir, zipFilename string) error {
 		ImplicitTopLevelFolder: false,
 	}
 	return z.Archive([]string{dir}, zipFilename)
+}
+
+// CompressUsing7z Compress using 7z
+func CompressUsing7z(src, dst, password string) ([]byte, error) {
+	execPath := ""
+	sysType := runtime.GOOS
+	if sysType == "windows" {
+		execPath = "./7zr.exe"
+	} else if sysType == "darwin" {
+		execPath = "/opt/homebrew/bin/7z"
+	}
+	if !FileExists(execPath) {
+		return nil, fmt.Errorf("找不到7zr, 请将7zr执行文件放置到当前目录")
+	}
+
+	if password != "" {
+		password = "-p" + password
+	}
+	args := []string{"a", dst, src, password}
+	cmd := exec.Command(execPath, args...)
+	return cmd.CombinedOutput()
 }
 
 // Compress 压缩文件夹
