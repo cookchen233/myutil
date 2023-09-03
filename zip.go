@@ -28,23 +28,24 @@ func archive(dir, zipFilename string) error {
 }
 
 // CompressUsing7z Compress using 7z
-func CompressUsing7z(src, dst, password string) ([]byte, error) {
-	execPath := ""
-	sysType := runtime.GOOS
-	if sysType == "windows" {
-		execPath = "./7zr.exe"
-	} else if sysType == "darwin" {
-		execPath = "/opt/homebrew/bin/7z"
+func CompressUsing7z(src, dst, password, exePath string) ([]byte, error) {
+	if exePath == "" {
+		sysType := runtime.GOOS
+		if sysType == "windows" {
+			exePath = "./7z/7z.exe"
+		} else if sysType == "darwin" {
+			exePath = "/opt/homebrew/bin/7z"
+		}
 	}
-	if !FileExists(execPath) {
-		return nil, fmt.Errorf("找不到7zr, 请将7zr执行文件放置到当前目录")
+	if !FileExists(exePath) {
+		return nil, fmt.Errorf("找不到7z, 请将7z文件夹放置到当前目录")
 	}
 
 	if password != "" {
 		password = "-p" + password
 	}
 	args := []string{"a", dst, src, password}
-	cmd := exec.Command(execPath, args...)
+	cmd := exec.Command(exePath, args...)
 	return cmd.CombinedOutput()
 }
 
