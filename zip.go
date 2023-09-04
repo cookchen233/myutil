@@ -45,7 +45,6 @@ func CompressUsing7z(src, dst, password, exePath string) ([]byte, error) {
 	if password != "" {
 		args = append(args, "-p"+password)
 	}
-	fmt.Println(args)
 	cmd := exec.Command(exePath, args...)
 	return cmd.CombinedOutput()
 }
