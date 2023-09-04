@@ -38,13 +38,14 @@ func CompressUsing7z(src, dst, password, exePath string) ([]byte, error) {
 		}
 	}
 	if !FileExists(exePath) {
-		return nil, fmt.Errorf("找不到7z, 请将7z文件夹放置到当前目录")
+		return nil, fmt.Errorf("找不到%v, 请将7z执行文件放置到相应目录", exePath)
 	}
 
+	args := []string{"a", dst, src}
 	if password != "" {
-		password = "-p" + password
+		args = append(args, "-p"+password)
 	}
-	args := []string{"a", dst, src, password}
+	fmt.Println(args)
 	cmd := exec.Command(exePath, args...)
 	return cmd.CombinedOutput()
 }
